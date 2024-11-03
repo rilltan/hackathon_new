@@ -20,6 +20,8 @@ public class VirtualEyes : MonoBehaviour
     Vector3 min;
     Vector3 max;
 
+    public Vector3 lerpFactors;
+
 
     void Start()
     {
@@ -78,7 +80,6 @@ public class VirtualEyes : MonoBehaviour
         if (dataReceived != null && dataReceived != "")
         {
             string[] data = dataReceived.Split(',');
-            Debug.Log(data[0]);
             Vector2 right_eye = new Vector2(float.Parse(data[0]), float.Parse(data[1]));
             Vector2 left_eye = new Vector2(float.Parse(data[2]), float.Parse(data[3]));
             float face_height = float.Parse(data[4]);
@@ -103,8 +104,10 @@ public class VirtualEyes : MonoBehaviour
     void Update()
     {
         // Set this object's position in the scene according to the position received
-        transform.position = position;
+        transform.position = new Vector3(Mathf.Lerp(transform.position.x, position.x, lerpFactors.x), Mathf.Lerp(transform.position.y,position.y,lerpFactors.y), Mathf.Lerp(transform.position.z,position.z,lerpFactors.z));
+        Debug.Log(min.z - transform.position.z);
         thiscam.projectionMatrix = Matrix4x4.Frustum(min.x - transform.position.x, max.x - transform.position.x, min.y - transform.position.y, max.y - transform.position.y, min.z - transform.position.z, 1000f);
+        thiscam.nearClipPlane = min.z - transform.position.z;
         //Vector3 camSpacePosition = thiscam.worldToCameraMatrix.MultiplyPoint(VirtualMonitor.transform.position);
         //Vector3 camSpaceNormal = thiscam.worldToCameraMatrix.MultiplyPoint(new Vector3(0,0,-1));
         //float camSpaceDistance = -Vector3.Dot(camSpacePosition, camSpaceNormal);
