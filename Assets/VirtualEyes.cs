@@ -104,7 +104,7 @@ public class VirtualEyes : MonoBehaviour
     {
         // Set this object's position in the scene according to the position received
         transform.position = position;
-        thiscam.projectionMatrix = Matrix4x4.Frustum(min.x - transform.position.x, max.x - transform.position.x, min.y - transform.position.y, max.y - transform.position.y, min.z - transform.position.zc, 1000f);
+        thiscam.projectionMatrix = Matrix4x4.Frustum(min.x - transform.position.x, max.x - transform.position.x, min.y - transform.position.y, max.y - transform.position.y, min.z - transform.position.z, 1000f);
         //Vector3 camSpacePosition = thiscam.worldToCameraMatrix.MultiplyPoint(VirtualMonitor.transform.position);
         //Vector3 camSpaceNormal = thiscam.worldToCameraMatrix.MultiplyPoint(new Vector3(0,0,-1));
         //float camSpaceDistance = -Vector3.Dot(camSpacePosition, camSpaceNormal);
