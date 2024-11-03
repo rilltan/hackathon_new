@@ -1,3 +1,5 @@
+// Networking Code adapted from tutorial https://github.com/ConorZAM/Python-Unity-Socket
+
 using System.Net.Sockets;
 using System.Net;
 using System.Text;
@@ -25,7 +27,6 @@ public class VirtualEyes : MonoBehaviour
 
     void Start()
     {
-        // Receive on a separate thread so Unity doesn't freeze waiting for data
         ThreadStart ts = new ThreadStart(GetData);
         thread = new Thread(ts);
         thread.Start();
@@ -49,14 +50,9 @@ public class VirtualEyes : MonoBehaviour
 
     void GetData()
     {
-        // Create the server
         server = new TcpListener(IPAddress.Any, connectionPort);
         server.Start();
-
-        // Create a client to get the data stream
         client = server.AcceptTcpClient();
-
-        // Start listening
         running = true;
         while (running)
         {
@@ -67,16 +63,12 @@ public class VirtualEyes : MonoBehaviour
 
     void Connection()
     {
-        // Read data from the network stream
         NetworkStream nwStream = client.GetStream();
         byte[] buffer = new byte[client.ReceiveBufferSize];
         int bytesRead = nwStream.Read(buffer, 0, client.ReceiveBufferSize);
 
-        // Decode the bytes into a string
         string dataReceived = Encoding.UTF8.GetString(buffer, 0, bytesRead);
 
-        // Make sure we're not getting an empty string
-        // dataReceived.Trim();
         if (dataReceived != null && dataReceived != "")
         {
             string[] data = dataReceived.Split(',');
@@ -85,7 +77,6 @@ public class VirtualEyes : MonoBehaviour
             float face_height = float.Parse(data[4]);
             nwStream.Write(buffer, 0, bytesRead);
 
-            // MATHS
             Vector2 avg_clip_pos = (right_eye + left_eye) / 2f;
             float angle_x = -(avg_clip_pos.x - 0.5f) * 68f;
             float angle_y = -(avg_clip_pos.y - 0.5f) * 51f;
@@ -97,20 +88,12 @@ public class VirtualEyes : MonoBehaviour
 
 
     }
-
-    // Position is the data being received in this example
     Vector3 position = Vector3.zero;
 
     void Update()
     {
-        // Set this object's position in the scene according to the position received
         transform.position = new Vector3(Mathf.Lerp(transform.position.x, position.x, lerpFactors.x), Mathf.Lerp(transform.position.y,position.y,lerpFactors.y), Mathf.Lerp(transform.position.z,position.z,lerpFactors.z));
-        Debug.Log(min.z - transform.position.z);
         thiscam.projectionMatrix = Matrix4x4.Frustum(min.x - transform.position.x, max.x - transform.position.x, min.y - transform.position.y, max.y - transform.position.y, min.z - transform.position.z, 1000f);
         thiscam.nearClipPlane = min.z - transform.position.z;
-        //Vector3 camSpacePosition = thiscam.worldToCameraMatrix.MultiplyPoint(VirtualMonitor.transform.position);
-        //Vector3 camSpaceNormal = thiscam.worldToCameraMatrix.MultiplyPoint(new Vector3(0,0,-1));
-        //float camSpaceDistance = -Vector3.Dot(camSpacePosition, camSpaceNormal);
-        //thiscam.projectionMatrix = thiscam.CalculateObliqueMatrix(new Vector4(camSpaceNormal.x, camSpaceNormal.y, camSpaceNormal.z, camSpaceDistance));
     }
 }
