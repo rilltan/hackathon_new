@@ -1,0 +1,11 @@
+Model Information:
+* title:	Hartnell's TARDIS Console Room
+* source:	https://sketchfab.com/3d-models/hartnells-tardis-console-room-3047323171e841828be441bbff70583e
+* author:	Matt Dixon (https://sketchfab.com/the1stdog)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Hartnell's TARDIS Console Room" (https://sketchfab.com/3d-models/hartnells-tardis-console-room-3047323171e841828be441bbff70583e) by Matt Dixon (https://sketchfab.com/the1stdog) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
